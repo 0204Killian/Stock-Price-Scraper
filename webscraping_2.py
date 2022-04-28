@@ -1,6 +1,10 @@
 from asyncio.windows_events import NULL
 from bs4 import BeautifulSoup
 import requests
+import os
+import time
+
+clear = lambda: os.system('cls')
 
 def tesla_tracker():
     url = "https://www.google.com/finance/quote/TSLA:NASDAQ"
@@ -32,5 +36,7 @@ def apple_tracker():
     cName3 = doc3.find(["div"], class_="zzDege")
 
     return cName3.string, gsearch.string
-
-print(apple_tracker(), meta_tracker(), tesla_tracker())
+while(True):
+    print(apple_tracker(), meta_tracker(), tesla_tracker())
+    time.sleep(5)
+    clear()
