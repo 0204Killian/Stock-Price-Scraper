@@ -1,31 +1,42 @@
 from asyncio.windows_events import NULL
 from bs4 import BeautifulSoup
 import requests
-import re
+import os
+import time
 
+clear = lambda: os.system('cls')
 
-url = "https://finance.yahoo.com/quote/AAPL?p=AAPL&.tsrc=fin-srch"
+def tesla_tracker():
+    url = "https://www.google.com/finance/quote/TSLA:NASDAQ"
 
-result = requests.get(url, headers={"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36"})
-doc = BeautifulSoup(result.text, "html.parser")
+    result = requests.get(url, headers={"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36"})
+    doc = BeautifulSoup(result.text, "html.parser")
 
-Presearch = doc.find(["fin-streamer"], class_="C($primaryColor) Fz(24px) Fw(b)")
-Presearch = ("The Pre-Market Price is: " + str(Presearch))
-Opensearch = doc.find(["fin-streamer"], class_="Fw(b) Fz(36px) Mb(-4px) D(ib)")
+    gsearch = doc.find(["div"], class_="YMlKec fxKbKc")
+    cName = doc.find(["div"], class_="zzDege")
 
-print(Presearch)
-print("The Market Price is: ",Opensearch['value'])
+    return cName.string, gsearch.string
+def meta_tracker():
+    url2 = "https://www.google.com/finance/quote/FB:NASDAQ"
 
-print("__________________________________________________________________________________________")
-url2 = "https://finance.yahoo.com/quote/FB?p=FB&ncid=yahooproperties_peoplealso_km0o32z3jzm"
+    result2 = requests.get(url2, headers={"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36"})
+    doc2 = BeautifulSoup(result2.text, "html.parser")
 
-result2 = requests.get(url2, headers={"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36"})
-doc2 = BeautifulSoup(result2.text, "html.parser")
+    gsearch = doc2.find(["div"], class_="YMlKec fxKbKc")
+    cName2 = doc2.find(["div"], class_="zzDege")
 
-Presearch2 = doc2.find(["fin-streamer"], class_="C($primaryColor) Fz(24px) Fw(b)")
-Presearch2 = ("The Pre-Market Price is: " + str(Presearch2))
-Opensearch2 = doc2.find(["fin-streamer"], class_="Fw(b) Fz(36px) Mb(-4px) D(ib)")
+    return cName2.string, gsearch.string
+def apple_tracker():
+    url3 = "https://www.google.com/finance/quote/AAPL:NASDAQ"
 
-print(Presearch2)
-print("The Market Price is: ",Opensearch2['value'])
+    result3 = requests.get(url3, headers={"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36"})
+    doc3 = BeautifulSoup(result3.text, "html.parser")
 
+    gsearch = doc3.find(["div"], class_="YMlKec fxKbKc")
+    cName3 = doc3.find(["div"], class_="zzDege")
+
+    return cName3.string, gsearch.string
+while(True):
+    print(apple_tracker(), meta_tracker(), tesla_tracker())
+    time.sleep(5)
+    clear()
