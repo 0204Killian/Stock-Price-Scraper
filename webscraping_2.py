@@ -29,3 +29,13 @@ Opensearch2 = doc2.find(["fin-streamer"], class_="Fw(b) Fz(36px) Mb(-4px) D(ib)"
 print(Presearch2)
 print("The Market Price is: ",Opensearch2['value'])
 
+print("__________________________________________________________________________________________")
+
+url3 = "https://www.google.com/finance/quote/AAPL:NASDAQ"
+
+result3 = requests.get(url3, headers={"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36"})
+doc3 = BeautifulSoup(result3.text, "html.parser")
+
+gsearch = doc3.find(["div"], class_="YMlKec fxKbKc")
+
+print(gsearch.string)
