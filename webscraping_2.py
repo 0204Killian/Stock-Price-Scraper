@@ -1,42 +1,31 @@
 from asyncio.windows_events import NULL
 from bs4 import BeautifulSoup
 import requests
-import os
-import time
+from datetime import datetime
 
-clear = lambda: os.system('cls')
+def time_sorter():
+    now = datetime.now()
+    ntime = now.strftime("%H:%M")
+    preMTime = ntime.split(":")
+    if(int(preMTime[0]) < 14) or (int(preMTime[0]) >= 21):
+        if(int(preMTime[1]) < 30) or (int(preMTime[1]) > 0):
+            preMarket = "Pre-market"
+            return ntime, preMarket
+    return ntime
 
-def tesla_tracker():
-    url = "https://www.google.com/finance/quote/TSLA:NASDAQ"
 
+def URL_getter():
+    tracker = input("Enter a company tracker(E.G AAPL): ")
+    url = "https://www.google.com/finance/quote/"+tracker.upper()+":NASDAQ"
+    return url
+
+print("Get price of company stock")
+while(True):
+    url = URL_getter()
+    if(url == "quit"):
+        False
     result = requests.get(url, headers={"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36"})
     doc = BeautifulSoup(result.text, "html.parser")
 
-    gsearch = doc.find(["div"], class_="YMlKec fxKbKc")
-    cName = doc.find(["div"], class_="zzDege")
-
-    return cName.string, gsearch.string
-def meta_tracker():
-    url2 = "https://www.google.com/finance/quote/FB:NASDAQ"
-
-    result2 = requests.get(url2, headers={"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36"})
-    doc2 = BeautifulSoup(result2.text, "html.parser")
-
-    gsearch = doc2.find(["div"], class_="YMlKec fxKbKc")
-    cName2 = doc2.find(["div"], class_="zzDege")
-
-    return cName2.string, gsearch.string
-def apple_tracker():
-    url3 = "https://www.google.com/finance/quote/AAPL:NASDAQ"
-
-    result3 = requests.get(url3, headers={"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36"})
-    doc3 = BeautifulSoup(result3.text, "html.parser")
-
-    gsearch = doc3.find(["div"], class_="YMlKec fxKbKc")
-    cName3 = doc3.find(["div"], class_="zzDege")
-
-    return cName3.string, gsearch.string
-while(True):
-    print(apple_tracker(), meta_tracker(), tesla_tracker())
-    time.sleep(5)
-    clear()
+    search = doc.find("div", class_="YMlKec fxKbKc")
+    print(time_sorter(),":",search.string)
